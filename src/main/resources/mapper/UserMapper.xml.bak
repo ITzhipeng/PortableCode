@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huaian.portablecode.mapper.UserMapper">
+
+<insert id="getUserRegis" parameterType="com.huaian.portablecode.entity.UserRegister">
+    insert into user_regis (id,openid,regis_time,type,source,ent_time,upd_time)
+    values(#id{id},#{openid},#{regis_time},#{type},#{source},#{ent_time},#{upd_time})
+</insert>
+
+    <insert id="getUserInfo" parameterType="com.huaian.portablecode.entity.UserDetail">
+    insert into user_info (id,pid,user_name,user_id,nati,cart_typ,cart_num,
+    is_regis,regis_rela,cart_dir,user_dir,user_addr,user_typ,ba_reason,ba_date,
+    unit,car_info,live_typ,bel_cun,bel_xj,bel_soc,bel_netw,bel_est,det_addr,longitude,
+    latitude,identity,user_role,area_arr,fist_color,source,ent_time,upd_time,phone)
+    values(#{id},#{pid},#{user_name},#{user_id},#{nati},#{cart_typ},#{cart_num},
+    #{is_regis},#{regis_rela},#{cart_dir},#{user_dir},#{user_addr},#{user_typ},
+    #{ba_reason},#{ba_date},#{unit},#{car_info},#{live_typ},#{bel_cun},#{bel_xj},
+    #{bel_soc},#{bel_netw},#{bel_est},#{det_addr},#{longitude},#{latitude},#{identity},
+    #{user_role},#{area_arr},#{fist_color},#{source},#{ent_time},#{upd_time},#{phone})
+</insert>
+
+    <insert id="getUserRegis" parameterType="com.huaian.portablecode.entity.UserHealthInfo">
+    insert into user_health_info (id,user_id,is_ft_one,is_ft_two,is_ft_three,is_ft_four,
+    is_ft_five,is_sep_stay,is_out_ts,tt_is_abr,from_count,source,ent_time,upd_time)
+    values(#{id},#{user_id},#{is_ft_one},#{is_ft_two},#{is_ft_three},#{is_ft_four},
+    #{is_ft_five},#{is_sep_stay},#{is_out_ts},#{tt_is_abr},#{from_count},#{source},
+    #{ent_time},#{upd_time})
+</insert>
+</mapper>

@@ -8,7 +8,7 @@ public class UserRegister implements Serializable {
     private String openid;//微信识别码
     private String phone;//电话号码(加密)
     private Date regis_time;//注册时间
-    private Integer type;//用户状态(0注销、1有效)
+    private int type;//用户状态(0注销、1有效)
     private String source;//数据来源
     private Date ent_time;//数据入库时间
     private Date upd_time;//数据更新时间
@@ -45,11 +45,11 @@ public class UserRegister implements Serializable {
         this.regis_time = regis_time;
     }
 
-    public Integer getType() {
+    public int getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(int type) {
         this.type = type;
     }
 

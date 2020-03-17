@@ -1,6 +1,9 @@
 package com.huaian.portablecode.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.huaian.portablecode.entity.UserDetail;
+import com.huaian.portablecode.entity.UserHealthInfo;
+import com.huaian.portablecode.entity.UserRegister;
 import com.huaian.portablecode.service.UserService;
 import com.huaian.portablecode.utils.RedisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import com.huaian.portablecode.vo.ResultVo;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin
@@ -21,32 +27,123 @@ public class UserController {
 
     @PostMapping("register")
     public Object register(@RequestBody JSONObject object) {
-
-        if (object.get("name").equals("") || object.get("name") == null) {
+        String name = object.get("name").toString();
+        String sfzhm = object.get("sfzhm").toString();
+        if (ObjectUtils.isEmpty(name)) {
             return ResultVo.getFailed("姓名不可为空");
-        } else if (object.get("sfzhm").equals("") || object.get("sfzhm") == null) {
+        } else if (ObjectUtils.isEmpty(sfzhm)) {
             return ResultVo.getFailed("身份证号码不可为空");
         } else {
-            userService.addUser(object.get("name").toString(), object.get("sfzhm").toString());
+            //用户注册信息表
+            UserRegister userRegister = new UserRegister();
+//            String openid = redisUtil.get("openid").toString();
+            long id = 12422400;
+            String openid = "12321234";
+            String phone = object.get("phone").toString();
+//            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
+            Date regis_time = new Date(System.currentTimeMillis());
+            int type = 1;
+            String source = "22";
+            Date ent_time = new Date(System.currentTimeMillis());
+            Date upd_time = new Date(System.currentTimeMillis());
+            userRegister.setId(id);
+            userRegister.setOpenid(openid);
+            userRegister.setRegis_time(regis_time);
+            userRegister.setType(type);
+            userRegister.setSource(source);
+            userRegister.setEnt_time(ent_time);
+            userRegister.setUpd_time(upd_time);
+            userRegister.setPhone("1234523");
+            userService.getUserRegis(userRegister);
+            System.out.println("用户注册信息表数据插入成功");
+            //用户信息表
+            UserDetail userDetail = new UserDetail();
+            userDetail.setId(id);
+            userDetail.setPid(Long.parseLong(openid));
+            userDetail.setUser_name(name);
+            userDetail.setUser_id("11");
+            //国际
+            userDetail.setNati(object.get("nati").toString());
+            //证件类型(1身份证 2其他)
+            userDetail.setCart_typ(Integer.valueOf(String.valueOf(object.get("cart_typ"))) );
+            userDetail.setCart_num(sfzhm);
+            userDetail.setIs_regis(Integer.valueOf(String.valueOf( object.get("phone"))));
+            userDetail.setRegis_rela(Integer.valueOf(String.valueOf(object.get("regis_rela"))));
+            userDetail.setCart_dir("");
+            userDetail.setUser_dir("");
+            userDetail.setUser_addr("");
+            //人员类型
+            userDetail.setUser_typ(Integer.valueOf(String.valueOf(object.get("user_typ"))));
+            userDetail.setBa_reason(0);
+            userDetail.setBa_date(ent_time);
+            //工作单位
+            userDetail.setUnit(object.get("unit").toString());
+            //车辆信息
+            userDetail.setCar_info(object.get("car_info").toString());
+            //居住处所类型type_id=6
+            userDetail.setLive_typ(8);
+            userDetail.setBel_cun("");
+            userDetail.setBel_xj("");
+            //所属社区
+            userDetail.setBel_soc(object.get("bel_soc").toString());
+            userDetail.setBel_netw("");
+            //所属小区
+            userDetail.setBel_est(object.get("bel_est").toString());
+            //详细地址
+            userDetail.setDet_addr(object.get("det_addr").toString());
+            userDetail.setLongitude(21);
+            userDetail.setLatitude(23);
+            userDetail.setIdentity("");
+            userDetail.setUser_role(0);
+            userDetail.setArea_arr("");
+            userDetail.setFist_color(0);
+            userDetail.setSource("1");
+            userDetail.setEnt_time(ent_time);
+            userDetail.setUpd_time(ent_time);
+            userDetail.setPhone(phone);
+            userService.getUserInfo(userDetail);
+            System.out.println("用户详情数据插入成功");
+
+            //用户健康信息表
+            UserHealthInfo userHealthInfo = new UserHealthInfo();
+            userHealthInfo.setId(id);
+            userHealthInfo.setUser_id(openid);
+            userHealthInfo.setIs_ft_one((Integer) object.get("is_ft_one"));
+            userHealthInfo.setIs_ft_two((Integer) object.get("is_ft_two"));
+            userHealthInfo.setIs_ft_three((Integer) object.get("is_ft_three"));
+            userHealthInfo.setIs_ft_four((Integer) object.get("is_ft_four"));
+            userHealthInfo.setIs_ft_five((Integer) object.get("is_ft_five"));
+            userHealthInfo.setIs_sep_stay((Integer) object.get("is_sep_stay"));
+            userHealthInfo.setIs_out_ts((Integer) object.get("is_out_ts"));
+            userHealthInfo.setTt_is_abr((Integer) object.get("tt_is_abr"));
+            userHealthInfo.setFrom_count("1");
+            userHealthInfo.setSource("1");
+            userHealthInfo.setEnt_time(ent_time);
+            userHealthInfo.setUpd_time(ent_time);
+            userService.user_health_info(userHealthInfo);
+            System.out.println("用用户健康信息表数据插入成功");
+//            userService.addUser(object.get("name").toString(), object.get("sfzhm").toString());
             return ResultVo.getSuccess("注册成功");
         }
     }
+
     @PostMapping("login")
     public Object wxLogin(@RequestParam(defaultValue = "") String js_code) throws Exception {
-        if(!ObjectUtils.isEmpty(js_code)){
-            JSONObject jsonArray = userService.login(js_code);
-            JSONObject loginResult = new JSONObject();
+        if (!ObjectUtils.isEmpty(js_code)) {
+//            JSONObject jsonArray = userService.login(js_code);
+            JSONObject loginResult = userService.login(js_code);
 
-            redisUtil.set("openid",jsonArray.get(3),1);
+            redisUtil.set("openid", "12345", 10 * 6 * 6);
 
             return ResultVo.getSuccess("数据返回成功", loginResult);
-        }else {
+        } else {
             return ResultVo.getFailed("js_code不可为空");
         }
 
     }
+
     @PostMapping("query")
-    public List<String> query(){
+    public List<String> query() {
         return userService.query();
     }
 }

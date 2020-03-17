@@ -3,6 +3,9 @@ package com.huaian.portablecode.service.Impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.huaian.portablecode.entity.UserDetail;
+import com.huaian.portablecode.entity.UserHealthInfo;
+import com.huaian.portablecode.entity.UserRegister;
 import com.huaian.portablecode.mapper.UserMapper;
 import com.huaian.portablecode.service.UserService;
 import com.huaian.portablecode.utils.HttpClientUtil;
@@ -47,6 +50,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public void addUser(String name, String sfzhm) {
         userMapper.addUser(name, sfzhm);
+    }
+
+    @Override
+    public void getUserRegis(UserRegister userRegister) {
+        userMapper.getUserRegis(userRegister);
+    }
+
+    @Override
+    public void getUserInfo(UserDetail userDetail) {
+        userMapper.getUserInfo(userDetail);
+    }
+
+    @Override
+    public void user_health_info(UserHealthInfo userHealthInfo) {
+        userMapper.user_health_info(userHealthInfo);
     }
 
     @Override

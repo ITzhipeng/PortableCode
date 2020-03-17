@@ -39,14 +39,6 @@ public class UserDetail implements Serializable {
     Date upd_time;//	数据更新时间
     String phone; // 手机号码
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public long getId() {
         return id;
     }
@@ -309,5 +301,13 @@ public class UserDetail implements Serializable {
 
     public void setUpd_time(Date upd_time) {
         this.upd_time = upd_time;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
