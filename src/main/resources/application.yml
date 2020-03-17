@@ -14,8 +14,10 @@ spring:
 #    username: root
 #    password: 1234
 
+#jdbc:oracle:thin:@192.168.220.161:1521:ha_hst
+    #jdbc:oracle:thin:@(description=(address=(protocol=tcp)(port=1521)(host=192.168.220.161))(connect_data=(service_name=ha_hst)))
     driver-class-name: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@192.168.220.161:1521:ha_hst
+    url: jdbc:oracle:thin:@(description=(address=(protocol=tcp)(port=1521)(host=192.168.220.161))(connect_data=(service_name=hstxcx)))
     username: ha_hst
     password: ha_hst1qaz
 
