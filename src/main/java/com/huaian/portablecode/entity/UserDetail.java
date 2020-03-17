@@ -37,6 +37,15 @@ public class UserDetail implements Serializable {
     String source;//	数据来源
     Date ent_time;//	数据入库时间
     Date upd_time;//	数据更新时间
+    String phone; // 手机号码
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public long getId() {
         return id;

@@ -15,7 +15,7 @@ spring:
 #    password: 1234
 
     driver-class-name: oracle.jdbc.driver.OracleDriver
-    url: jdbc:oracle:thin:@192.168.220.161:22:ha_hst
+    url: jdbc:oracle:thin:@192.168.220.161:1521:ha_hst
     username: ha_hst
     password: ha_hst1qaz
 
