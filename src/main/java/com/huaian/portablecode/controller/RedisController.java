@@ -3,16 +3,12 @@ package com.huaian.portablecode.controller;
 
 import com.huaian.portablecode.entity.UserEntity;
 import com.huaian.portablecode.utils.RedisUtil;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.Date;
 
 /**
  * @program: springbootdemo
- * @Date: 2019/2/22 15:03
- * @Author: zjjlive
  * @Description:
  */
 @RequestMapping("/redis")
