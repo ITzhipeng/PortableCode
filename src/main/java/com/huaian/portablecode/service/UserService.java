@@ -1,8 +1,12 @@
 package com.huaian.portablecode.service;
 
-import java.util.HashMap;
+
+import com.alibaba.fastjson.JSONObject;
 
 public interface UserService {
+
+    JSONObject login(String code);
+
     void addUser(String name,String sfzhm);
 
 }
