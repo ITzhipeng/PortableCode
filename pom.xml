@@ -61,8 +61,10 @@
 
         <dependency>
             <groupId>com.oracle.ojdbc</groupId>
-            <artifactId>ojdbc8</artifactId>
-            <scope>runtime</scope>
+            <artifactId>ojdbc6</artifactId>
+            <!--加入本地依赖-->
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/lib/ojdbc6.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -85,6 +87,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--将作用域为system的本地jar包打进项目jar中-->
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
             </plugin>
         </plugins>
     </build>

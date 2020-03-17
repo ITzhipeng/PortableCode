@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.huaian.portablecode.vo.ResultVo;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin
 public class UserController {
@@ -38,7 +40,7 @@ public class UserController {
         }
     }
     @PostMapping("query")
-    public String query(){
+    public List<String> query(){
         return userService.query();
     }
 }
