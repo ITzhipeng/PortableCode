@@ -33,7 +33,7 @@ public class RedisController {
 
         //return redisUtil.set(key,userEntity,ExpireTime);
 
-        return redisUtil.set(key,value);
+        return redisUtil.set(key,userEntity);
     }
 
     @RequestMapping("get")
