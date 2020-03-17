@@ -48,4 +48,9 @@ public class UserServiceImpl implements UserService {
         userMapper.addUser(name, sfzhm);
     }
 
+    @Override
+    public String query() {
+        return userMapper.query();
+    }
+
 }

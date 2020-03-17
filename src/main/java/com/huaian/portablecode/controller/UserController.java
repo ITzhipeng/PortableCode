@@ -37,4 +37,8 @@ public class UserController {
             return ResultVo.getFailed("js_code不可为空");
         }
     }
+    @PostMapping("query")
+    public String query(){
+        return userService.query();
+    }
 }

@@ -9,4 +9,6 @@ public interface UserService {
 
     void addUser(String name,String sfzhm);
 
+    String query();
+
 }
