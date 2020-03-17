@@ -10,9 +10,9 @@ spring:
   # datasource
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/wxlogin?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
+    url: jdbc:mysql://127.0.0.1:3306/huaian?useUnicode=true&characterEncoding=utf8&autoReconnect=true&allowMultiQueries=true&useSSL=false
     username: root
-    password: 123456
+    password: 1234
 
   # --- redis
   redis:
