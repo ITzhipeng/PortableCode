@@ -165,6 +165,7 @@ public class UserController {
 
     @PostMapping("login")
     public Object wxLogin(@RequestParam(defaultValue = "") String js_code) throws Exception {
+        logger.info("登录code:", js_code);
         if (!ObjectUtils.isEmpty(js_code)) {
             JSONObject jsonResult = userService.login(js_code);
             if (jsonResult.toString().contains("errcode")) {
