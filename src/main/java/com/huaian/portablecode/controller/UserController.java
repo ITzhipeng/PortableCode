@@ -6,13 +6,16 @@ import com.huaian.portablecode.entity.UserHealthInfo;
 import com.huaian.portablecode.entity.UserRegister;
 import com.huaian.portablecode.service.UserService;
 import com.huaian.portablecode.utils.RedisUtil;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 import com.huaian.portablecode.vo.ResultVo;
 
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -20,6 +23,9 @@ import java.util.UUID;
 @RestController
 @CrossOrigin
 public class UserController {
+
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
     @Resource
@@ -57,7 +63,7 @@ public class UserController {
             userRegister.setUpd_time(upd_time);
             userRegister.setPhone(object.get("phone").toString());
             userService.getUserRegis(userRegister);
-            System.out.println("用户注册信息表数据插入成功");
+            logger.info("用户注册信息表数据插入成功");
 
             //用户信息表
             UserDetail userDetail = new UserDetail();
@@ -106,7 +112,7 @@ public class UserController {
             userDetail.setUpd_time(ent_time);
             userDetail.setPhone(phone);
             userService.getUserInfo(userDetail);
-            System.out.println("用户详情数据插入成功");
+            logger.info("用户详情数据插入成功");
 
             //用户健康信息表
             UserHealthInfo userHealthInfo = new UserHealthInfo();
@@ -125,7 +131,7 @@ public class UserController {
             userHealthInfo.setEnt_time(ent_time);
             userHealthInfo.setUpd_time(ent_time);
             userService.user_health_info(userHealthInfo);
-            System.out.println("用用户健康信息表数据插入成功");
+            logger.info("用用户健康信息表数据插入成功");
 //            userService.addUser(object.get("name").toString(), object.get("sfzhm").toString());
             return ResultVo.getSuccess("注册成功");
         }
@@ -134,20 +140,33 @@ public class UserController {
     @PostMapping("login")
     public Object wxLogin(@RequestParam(defaultValue = "") String js_code) throws Exception {
         if (!ObjectUtils.isEmpty(js_code)) {
-//            JSONObject jsonArray = userService.login(js_code);
-            JSONObject loginResult = userService.login(js_code);
+            JSONObject jsonResult = userService.login(js_code);
+            String md5Key = DigestUtils.md5Hex(jsonResult + "HSA_WX_LOGIN");
+            String redisKey = "HSA_" + md5Key;
 
-            redisUtil.set("openid", loginResult.get("openid"), 10 * 6 * 6);
+            redisUtil.set(redisKey, jsonResult, Duration.ofDays(7).toMillis());
 
-            return ResultVo.getSuccess("数据返回成功", loginResult);
+            return ResultVo.getSuccess("数据返回成功", redisKey);
         } else {
             return ResultVo.getFailed("js_code不可为空");
         }
 
     }
 
-    @PostMapping("query")
-    public List<String> query() {
-        return userService.query();
+    @PostMapping("getPhone")
+    public Object getUserPhone(@RequestParam(defaultValue = "") String encrypdata,
+                               @RequestParam(defaultValue = "") String ticket,
+                               @RequestParam(defaultValue = "") String ivdata) {
+        if(ObjectUtils.isEmpty(ticket)){
+            return ResultVo.getFailed("ticket为空！");
+        }
+        JSONObject json = (JSONObject) redisUtil.get(ticket);
+        if(ObjectUtils.isEmpty(json)){
+            return ResultVo.getFailed("获取用户session_key失败，请检查联系后端 ");
+        }
+        String sessionKey = (String) json.get("session_key");
+        String userPhone = userService.getUserPhone(sessionKey, encrypdata, ivdata);
+
+        return ResultVo.getSuccess("获取用户电话成功！",userPhone);
     }
 }

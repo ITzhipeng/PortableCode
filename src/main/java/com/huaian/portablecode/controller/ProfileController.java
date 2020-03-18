@@ -5,16 +5,14 @@ import com.huaian.portablecode.service.IProfileService;
 import com.huaian.portablecode.vo.ResultVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 我的  Controller类
  */
 
 @RestController
+@CrossOrigin
 public class ProfileController {
 
     @Autowired

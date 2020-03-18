@@ -25,4 +25,5 @@ public interface UserService {
 
     List<String> query();
 
+    String getUserPhone(String sessionKey, String encrypdata, String ivdata);
 }
