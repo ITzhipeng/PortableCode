@@ -23,13 +23,16 @@ public interface UserMapper {
     @Insert("insert into user_regis (id,openid,phone,regis_time,type,source,ent_time,upd_time)values(#{id},#{openid},#{phone},#{regis_time},#{type},#{source},#{ent_time},#{upd_time})")
     void getUserRegis(UserRegister userRegister);
 
-@Insert("insert into user_info (id,pid,user_name,user_id,nati,cart_typ,cart_num,is_regis,regis_rela,cart_dir,user_dir,user_addr,user_typ,ba_reason,ba_date,unit,car_info,live_typ,bel_cun,bel_xj,bel_soc,bel_netw,bel_est,det_addr,longitude,latitude,identity,user_role,area_arr,fist_color,source,ent_time,upd_time,phone)values(#{id},#{pid},#{user_name},#{user_id},#{nati},#{cart_typ},#{cart_num},#{is_regis},#{regis_rela},#{cart_dir},#{user_dir},#{user_addr},#{user_typ},#{ba_reason},#{ba_date},#{unit},#{car_info},#{live_typ},#{bel_cun},#{bel_xj},#{bel_soc},#{bel_netw},#{bel_est},#{det_addr},#{longitude},#{latitude},#{identity},#{user_role},#{area_arr},#{fist_color},#{source},#{ent_time},#{upd_time},#{phone})")
+    @Insert("insert into user_info (id,pid,user_name,user_id,nati,cart_typ,cart_num,is_regis,regis_rela,cart_dir,user_dir,user_addr,user_typ,ba_reason,ba_date,unit,car_info,live_typ,bel_cun,bel_xj,bel_soc,bel_netw,bel_est,det_addr,longitude,latitude,identity,user_role,area_arr,fist_color,source,ent_time,upd_time,phone)values(#{id},#{pid},#{user_name},#{user_id},#{nati},#{cart_typ},#{cart_num},#{is_regis},#{regis_rela},#{cart_dir},#{user_dir},#{user_addr},#{user_typ},#{ba_reason},#{ba_date},#{unit},#{car_info},#{live_typ},#{bel_cun},#{bel_xj},#{bel_soc},#{bel_netw},#{bel_est},#{det_addr},#{longitude},#{latitude},#{identity},#{user_role},#{area_arr},#{fist_color},#{source},#{ent_time},#{upd_time},#{phone})")
     void getUserInfo(UserDetail userDetail);
 
-@Insert("insert into user_health_info (id,user_id,is_ft_one,is_ft_two,is_ft_three,is_ft_four,\n" +
-        "    is_ft_five,is_sep_stay,is_out_ts,tt_is_abr,from_count,source,ent_time,upd_time)\n" +
-        "    values(#{id},#{user_id},#{is_ft_one},#{is_ft_two},#{is_ft_three},#{is_ft_four},\n" +
-        "    #{is_ft_five},#{is_sep_stay},#{is_out_ts},#{tt_is_abr},#{from_count},#{source},\n" +
-        "    #{ent_time},#{upd_time})")
+    @Insert("insert into user_health_info (id,user_id,is_ft_one,is_ft_two,is_ft_three,is_ft_four,\n" +
+            "    is_ft_five,is_sep_stay,is_out_ts,tt_is_abr,from_count,source,ent_time,upd_time)\n" +
+            "    values(#{id},#{user_id},#{is_ft_one},#{is_ft_two},#{is_ft_three},#{is_ft_four},\n" +
+            "    #{is_ft_five},#{is_sep_stay},#{is_out_ts},#{tt_is_abr},#{from_count},#{source},\n" +
+            "    #{ent_time},#{upd_time})")
     void user_health_info(UserHealthInfo userHealthInfo);
+
+    @Select("select cart_num from user_info where cart_num=#{zjhm} and rownum <= 1")
+    String getZjhm(@Param("zjhm")String zjhm);
 }

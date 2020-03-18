@@ -12,6 +12,7 @@ public class UserRegister implements Serializable {
     private String source;//数据来源
     private Date ent_time;//数据入库时间
     private Date upd_time;//数据更新时间
+    private String zjhm;
 
     public String getId() {
         return id;
@@ -75,5 +76,13 @@ public class UserRegister implements Serializable {
 
     public void setUpd_time(Date upd_time) {
         this.upd_time = upd_time;
+    }
+
+    public String getZjhm() {
+        return zjhm;
+    }
+
+    public void setZjhm(String zjhm) {
+        this.zjhm = zjhm;
     }
 }

@@ -5,6 +5,7 @@ import com.huaian.portablecode.entity.UserDetail;
 import com.huaian.portablecode.entity.UserHealthInfo;
 import com.huaian.portablecode.entity.UserRegister;
 import com.huaian.portablecode.service.UserService;
+import com.huaian.portablecode.utils.AESUtil;
 import com.huaian.portablecode.utils.RedisUtil;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import com.huaian.portablecode.vo.ResultVo;
 import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.Date;
+import java.util.HashMap;
 
 @RestController
 @CrossOrigin
@@ -32,11 +34,12 @@ public class UserController {
 
     @PostMapping("register")
     public Object register(@RequestBody JSONObject object) {
-        String name = object.get("name").toString();
-        String sfzhm = object.get("sfzhm").toString();
+        String name = AESUtil.encryptStr(object.get("name").toString());
+        ;
+        String zjhm = AESUtil.encryptStr(object.get("zjhm").toString());
         if (ObjectUtils.isEmpty(name)) {
             return ResultVo.getFailed("姓名不可为空");
-        } else if (ObjectUtils.isEmpty(sfzhm)) {
+        } else if (ObjectUtils.isEmpty(zjhm)) {
             return ResultVo.getFailed("身份证号码不可为空");
         } else {
 //            UUID uuid = UUID.randomUUID();
@@ -61,11 +64,34 @@ public class UserController {
             userRegister.setEnt_time(ent_time);
             userRegister.setUpd_time(upd_time);
             userRegister.setPhone(object.get("phone").toString());
+            userRegister.setZjhm(zjhm);
             userService.getUserRegis(userRegister);
             logger.info("用户注册信息表数据插入成功");
 
-            //用户信息表
+
+//            userService.addUser(object.get("name").toString(), object.get("sfzhm").toString());
+            return ResultVo.getSuccess("注册成功");
+        }
+    }
+
+    @PostMapping("getUserInfo")
+    public Object getUserInfo(@RequestBody JSONObject object) {
+        //用户信息表
+        JSONObject jsonObject = new JSONObject();
+
+        String sfzhm = userService.getZjhm(AESUtil.encryptStr(object.get("zjhm").toString()));
+        if (!ObjectUtils.isEmpty(sfzhm)) {
+            jsonObject.put("flag", "1");
+            return ResultVo.getSuccess("Success", jsonObject);
+        } else {
             UserDetail userDetail = new UserDetail();
+            String name = AESUtil.encryptStr(object.get("name").toString());
+            String zjhm = AESUtil.encryptStr(object.get("zjhm").toString());
+            String openid = "12321234";
+            String phone = object.get("phone").toString();
+            String id = "111";
+            Date ent_time = new Date(System.currentTimeMillis());
+
             userDetail.setId(id);
             userDetail.setPid(openid);
             userDetail.setUser_name(name);
@@ -75,8 +101,8 @@ public class UserController {
 
             //证件类型(1身份证 2其他)
             userDetail.setCart_typ(String.valueOf(object.get("cart_typ")));
-            userDetail.setCart_num(sfzhm);
-            userDetail.setIs_regis(String.valueOf( object.get("is_regis")));
+            userDetail.setCart_num(zjhm);
+            userDetail.setIs_regis(String.valueOf(object.get("is_regis")));
             userDetail.setRegis_rela(String.valueOf(object.get("regis_rela")));
             userDetail.setCart_dir("");
             userDetail.setUser_dir("");
@@ -118,21 +144,22 @@ public class UserController {
             userHealthInfo.setId(Long.valueOf(id));
             userHealthInfo.setUser_id(openid);
             userHealthInfo.setIs_ft_one(Integer.valueOf(String.valueOf(object.get("is_ft_one"))));
-            userHealthInfo.setIs_ft_two(Integer.valueOf(String.valueOf( object.get("is_ft_two"))));
-            userHealthInfo.setIs_ft_three(Integer.valueOf(String.valueOf( object.get("is_ft_three"))));
+            userHealthInfo.setIs_ft_two(Integer.valueOf(String.valueOf(object.get("is_ft_two"))));
+            userHealthInfo.setIs_ft_three(Integer.valueOf(String.valueOf(object.get("is_ft_three"))));
             userHealthInfo.setIs_ft_four(Integer.valueOf(String.valueOf(object.get("is_ft_four"))));
-            userHealthInfo.setIs_ft_five(Integer.valueOf(String.valueOf( object.get("is_ft_five"))));
-            userHealthInfo.setIs_sep_stay(Integer.valueOf(String.valueOf( object.get("is_sep_stay"))));
-            userHealthInfo.setIs_out_ts(Integer.valueOf(String.valueOf( object.get("is_out_ts"))));
+            userHealthInfo.setIs_ft_five(Integer.valueOf(String.valueOf(object.get("is_ft_five"))));
+            userHealthInfo.setIs_sep_stay(Integer.valueOf(String.valueOf(object.get("is_sep_stay"))));
+            userHealthInfo.setIs_out_ts(Integer.valueOf(String.valueOf(object.get("is_out_ts"))));
             userHealthInfo.setTt_is_abr(Integer.valueOf(String.valueOf(object.get("tt_is_abr"))));
             userHealthInfo.setFrom_count("1");
             userHealthInfo.setSource("1");
             userHealthInfo.setEnt_time(ent_time);
             userHealthInfo.setUpd_time(ent_time);
             userService.user_health_info(userHealthInfo);
-            logger.info("用用户健康信息表数据插入成功");
-//            userService.addUser(object.get("name").toString(), object.get("sfzhm").toString());
-            return ResultVo.getSuccess("注册成功");
+            logger.info("用户健康信息表数据插入成功");
+            jsonObject.put("flag", "0");
+            return ResultVo.getSuccess("Success", jsonObject);
+
         }
     }
 
@@ -159,17 +186,17 @@ public class UserController {
     @PostMapping("getPhone")
     public Object getUserPhone(@RequestParam(defaultValue = "") String encrypdata,
                                @RequestParam(defaultValue = "") String ticket,
-                                   @RequestParam(defaultValue = "") String ivdata) {
-        if(ObjectUtils.isEmpty(ticket)){
+                               @RequestParam(defaultValue = "") String ivdata) {
+        if (ObjectUtils.isEmpty(ticket)) {
             return ResultVo.getFailed("ticket为空！");
         }
         JSONObject json = (JSONObject) redisUtil.get(ticket);
-        if(ObjectUtils.isEmpty(json)){
+        if (ObjectUtils.isEmpty(json)) {
             return ResultVo.getFailed("获取用户session_key失败，请检查联系后端 ");
         }
         String sessionKey = (String) json.get("session_key");
         String userPhone = userService.getUserPhone(sessionKey, encrypdata, ivdata);
 
-        return ResultVo.getSuccess("获取用户电话成功！",userPhone);
+        return ResultVo.getSuccess("获取用户电话成功！", userPhone);
     }
 }

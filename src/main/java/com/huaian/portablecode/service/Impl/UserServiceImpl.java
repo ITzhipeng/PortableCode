@@ -98,6 +98,11 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public String getZjhm(String zjhm) {
+        return userMapper.getZjhm(zjhm);
+    }
+
     private String decrypt(byte[] sessionKey, byte[] ivData, byte[] encrypData) throws Exception {
         AlgorithmParameterSpec ivSpec = new IvParameterSpec(ivData);
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
