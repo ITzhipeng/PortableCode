@@ -83,6 +83,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String getUserPhone(String sessionKey, String encrypdata, String ivdata) {
+
         byte[] encrypData = Base64.decode(encrypdata);
         byte[] ivData = Base64.decode(ivdata);
         byte[] key = Base64.decode(sessionKey);

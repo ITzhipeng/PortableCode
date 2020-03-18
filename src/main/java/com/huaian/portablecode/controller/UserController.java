@@ -11,14 +11,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import com.huaian.portablecode.vo.ResultVo;
 
 import javax.annotation.Resource;
 import java.time.Duration;
 import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 @RestController
 @CrossOrigin
@@ -141,11 +140,15 @@ public class UserController {
     public Object wxLogin(@RequestParam(defaultValue = "") String js_code) throws Exception {
         if (!ObjectUtils.isEmpty(js_code)) {
             JSONObject jsonResult = userService.login(js_code);
+            if (jsonResult.toString().contains("errcode")) {
+                // 登陆凭证校验错误 code been used
+                return ResultVo.getFailed("登录失败！");
+            }
+
             String md5Key = DigestUtils.md5Hex(jsonResult + "HSA_WX_LOGIN");
             String redisKey = "HSA_" + md5Key;
-
+            // 保存至Redis
             redisUtil.set(redisKey, jsonResult, Duration.ofDays(7).toMillis());
-
             return ResultVo.getSuccess("数据返回成功", redisKey);
         } else {
             return ResultVo.getFailed("js_code不可为空");
@@ -156,7 +159,7 @@ public class UserController {
     @PostMapping("getPhone")
     public Object getUserPhone(@RequestParam(defaultValue = "") String encrypdata,
                                @RequestParam(defaultValue = "") String ticket,
-                               @RequestParam(defaultValue = "") String ivdata) {
+                                   @RequestParam(defaultValue = "") String ivdata) {
         if(ObjectUtils.isEmpty(ticket)){
             return ResultVo.getFailed("ticket为空！");
         }
