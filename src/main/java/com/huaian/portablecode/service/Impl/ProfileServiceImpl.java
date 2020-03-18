@@ -6,6 +6,8 @@ import com.huaian.portablecode.service.IProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 public class ProfileServiceImpl implements IProfileService {
 
@@ -19,6 +21,8 @@ public class ProfileServiceImpl implements IProfileService {
 
     @Override
     public int changeProfileInfo(UserDetail userDetail) {
+        // 修改更新时间
+        userDetail.setUpd_time(new Date());
         return profileMapper.update(userDetail);
     }
 }

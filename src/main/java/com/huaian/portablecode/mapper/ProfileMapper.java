@@ -15,8 +15,7 @@ public interface ProfileMapper {
     UserDetail getInfoByOpenIdAndCartNum(@Param("openId") String openId, @Param("cartNum")String cartNum);
 
     @Update("update user_info set user_name = #{user_name}, cart_num=#{cart_num},\n" +
-            "bel_est = #{bel_est}, det_addr = #{det_addr}, phone = #{phone}\n" +
-            "where pid = #{pid}\n" +
-            "and cart_num = #{cart_num} ")
+            "bel_est = #{bel_est}, det_addr = #{det_addr}, phone = #{phone}, upd_time = #{upd_time}\n" +
+            "where pid = #{pid} ")
     int update(UserDetail userDetail);
 }
