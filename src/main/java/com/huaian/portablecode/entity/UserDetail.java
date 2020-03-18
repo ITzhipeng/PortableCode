@@ -4,54 +4,54 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class UserDetail implements Serializable {
-    long id  ;//	ID
-    long pid;//	同users的id
+    String id  ;//	ID
+    String pid;//	同users的id
     String user_name;//	用户姓名(加密)
     String user_id;//	用户id
     String nati;//	国籍
-    int cart_typ;//	证件类型(1身份证 2其他)
+    String cart_typ;//	证件类型(1身份证 2其他)
     String cart_num;//	证件号码(加密)
-    int is_regis;//	是否自己填写(0否，1是)
-    int regis_rela;//	与注册人的关系type_id=3
+    String is_regis;//	是否自己填写(0否，1是)
+    String regis_rela;//	与注册人的关系type_id=3
     String cart_dir;//	用户身份证照片路径
     String user_dir;//	用户照片路径
     String user_addr;//	用户户口地址
-    int user_typ;//	人员类型（外地来淮…）
-    int ba_reason;//	来淮事由(企业务工、旅游…)
+    String user_typ;//	人员类型（外地来淮…）
+    String ba_reason;//	来淮事由(企业务工、旅游…)
     Date ba_date;//	来淮日期
     String unit;//	工作单位
     String car_info;//	车辆信息
-    int live_typ;//	居住处所类型type_id=6
+    String live_typ;//	居住处所类型type_id=6
     String bel_cun;//	所属区县
     String bel_xj;//	所属乡镇/街道
     String bel_soc;//	所属社区
     String bel_netw;//	所属网格
     String bel_est;//	所属小区
     String det_addr;//	详细地址
-    long longitude;//	经度
-    long latitude;//	纬度
+    String longitude;//	经度
+    String latitude;//	纬度
     String identity;//	识别码(身份)
-    int user_role;//	用户角色type_id=2
+    String user_role;//	用户角色type_id=2
     String area_arr;//	管理区域代码 多个逗号分隔
-    int fist_color;//	首次判定健康颜色type_id=1
+    String fist_color;//	首次判定健康颜色type_id=1
     String source;//	数据来源
     Date ent_time;//	数据入库时间
     Date upd_time;//	数据更新时间
     String phone; // 手机号码
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public long getPid() {
+    public String getPid() {
         return pid;
     }
 
-    public void setPid(long pid) {
+    public void setPid(String pid) {
         this.pid = pid;
     }
 
@@ -79,11 +79,11 @@ public class UserDetail implements Serializable {
         this.nati = nati;
     }
 
-    public int getCart_typ() {
+    public String getCart_typ() {
         return cart_typ;
     }
 
-    public void setCart_typ(int cart_typ) {
+    public void setCart_typ(String cart_typ) {
         this.cart_typ = cart_typ;
     }
 
@@ -95,19 +95,19 @@ public class UserDetail implements Serializable {
         this.cart_num = cart_num;
     }
 
-    public int getIs_regis() {
+    public String getIs_regis() {
         return is_regis;
     }
 
-    public void setIs_regis(int is_regis) {
+    public void setIs_regis(String is_regis) {
         this.is_regis = is_regis;
     }
 
-    public int getRegis_rela() {
+    public String getRegis_rela() {
         return regis_rela;
     }
 
-    public void setRegis_rela(int regis_rela) {
+    public void setRegis_rela(String regis_rela) {
         this.regis_rela = regis_rela;
     }
 
@@ -135,19 +135,19 @@ public class UserDetail implements Serializable {
         this.user_addr = user_addr;
     }
 
-    public int getUser_typ() {
+    public String getUser_typ() {
         return user_typ;
     }
 
-    public void setUser_typ(int user_typ) {
+    public void setUser_typ(String user_typ) {
         this.user_typ = user_typ;
     }
 
-    public int getBa_reason() {
+    public String getBa_reason() {
         return ba_reason;
     }
 
-    public void setBa_reason(int ba_reason) {
+    public void setBa_reason(String ba_reason) {
         this.ba_reason = ba_reason;
     }
 
@@ -175,11 +175,11 @@ public class UserDetail implements Serializable {
         this.car_info = car_info;
     }
 
-    public int getLive_typ() {
+    public String getLive_typ() {
         return live_typ;
     }
 
-    public void setLive_typ(int live_typ) {
+    public void setLive_typ(String live_typ) {
         this.live_typ = live_typ;
     }
 
@@ -231,19 +231,19 @@ public class UserDetail implements Serializable {
         this.det_addr = det_addr;
     }
 
-    public long getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
-    public long getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
@@ -255,11 +255,11 @@ public class UserDetail implements Serializable {
         this.identity = identity;
     }
 
-    public int getUser_role() {
+    public String getUser_role() {
         return user_role;
     }
 
-    public void setUser_role(int user_role) {
+    public void setUser_role(String user_role) {
         this.user_role = user_role;
     }
 
@@ -271,11 +271,11 @@ public class UserDetail implements Serializable {
         this.area_arr = area_arr;
     }
 
-    public int getFist_color() {
+    public String getFist_color() {
         return fist_color;
     }
 
-    public void setFist_color(int fist_color) {
+    public void setFist_color(String fist_color) {
         this.fist_color = fist_color;
     }
 

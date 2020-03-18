@@ -4,20 +4,20 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class UserRegister implements Serializable {
-    private Long id;//	ID
+    private String id;//	ID
     private String openid;//微信识别码
     private String phone;//电话号码(加密)
     private Date regis_time;//注册时间
-    private int type;//用户状态(0注销、1有效)
+    private String type;//用户状态(0注销、1有效)
     private String source;//数据来源
     private Date ent_time;//数据入库时间
     private Date upd_time;//数据更新时间
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -45,11 +45,11 @@ public class UserRegister implements Serializable {
         this.regis_time = regis_time;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 

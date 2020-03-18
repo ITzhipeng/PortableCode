@@ -34,16 +34,18 @@ public class UserController {
         } else if (ObjectUtils.isEmpty(sfzhm)) {
             return ResultVo.getFailed("身份证号码不可为空");
         } else {
+//            UUID uuid = UUID.randomUUID();
+            String id = "111";
+            System.out.println(id);
             //用户注册信息表
             UserRegister userRegister = new UserRegister();
 //            String openid = redisUtil.get("openid").toString();
-            long id = 12422400;
             String openid = "12321234";
             String phone = object.get("phone").toString();
 //            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
             Date regis_time = new Date(System.currentTimeMillis());
-            int type = 1;
-            String source = "22";
+            String type = "1";
+            String source = "1";
             Date ent_time = new Date(System.currentTimeMillis());
             Date upd_time = new Date(System.currentTimeMillis());
             userRegister.setId(id);
@@ -53,35 +55,37 @@ public class UserController {
             userRegister.setSource(source);
             userRegister.setEnt_time(ent_time);
             userRegister.setUpd_time(upd_time);
-            userRegister.setPhone("1234523");
+            userRegister.setPhone(object.get("phone").toString());
             userService.getUserRegis(userRegister);
             System.out.println("用户注册信息表数据插入成功");
+
             //用户信息表
             UserDetail userDetail = new UserDetail();
             userDetail.setId(id);
-            userDetail.setPid(Long.parseLong(openid));
+            userDetail.setPid(openid);
             userDetail.setUser_name(name);
             userDetail.setUser_id("11");
-            //国际
+            //国籍
             userDetail.setNati(object.get("nati").toString());
+
             //证件类型(1身份证 2其他)
-            userDetail.setCart_typ(Integer.valueOf(String.valueOf(object.get("cart_typ"))) );
+            userDetail.setCart_typ(String.valueOf(object.get("cart_typ")));
             userDetail.setCart_num(sfzhm);
-            userDetail.setIs_regis(Integer.valueOf(String.valueOf( object.get("phone"))));
-            userDetail.setRegis_rela(Integer.valueOf(String.valueOf(object.get("regis_rela"))));
+            userDetail.setIs_regis(String.valueOf( object.get("is_regis")));
+            userDetail.setRegis_rela(String.valueOf(object.get("regis_rela")));
             userDetail.setCart_dir("");
             userDetail.setUser_dir("");
             userDetail.setUser_addr("");
             //人员类型
-            userDetail.setUser_typ(Integer.valueOf(String.valueOf(object.get("user_typ"))));
-            userDetail.setBa_reason(0);
+            userDetail.setUser_typ(String.valueOf(object.get("user_typ")));
+            userDetail.setBa_reason("11");
             userDetail.setBa_date(ent_time);
             //工作单位
             userDetail.setUnit(object.get("unit").toString());
             //车辆信息
             userDetail.setCar_info(object.get("car_info").toString());
             //居住处所类型type_id=6
-            userDetail.setLive_typ(8);
+            userDetail.setLive_typ("11");
             userDetail.setBel_cun("");
             userDetail.setBel_xj("");
             //所属社区
@@ -91,12 +95,12 @@ public class UserController {
             userDetail.setBel_est(object.get("bel_est").toString());
             //详细地址
             userDetail.setDet_addr(object.get("det_addr").toString());
-            userDetail.setLongitude(21);
-            userDetail.setLatitude(23);
+            userDetail.setLongitude("11");
+            userDetail.setLatitude("11");
             userDetail.setIdentity("");
-            userDetail.setUser_role(0);
+            userDetail.setUser_role("11");
             userDetail.setArea_arr("");
-            userDetail.setFist_color(0);
+            userDetail.setFist_color("11");
             userDetail.setSource("1");
             userDetail.setEnt_time(ent_time);
             userDetail.setUpd_time(ent_time);
@@ -106,16 +110,16 @@ public class UserController {
 
             //用户健康信息表
             UserHealthInfo userHealthInfo = new UserHealthInfo();
-            userHealthInfo.setId(id);
+            userHealthInfo.setId(Long.valueOf(id));
             userHealthInfo.setUser_id(openid);
-            userHealthInfo.setIs_ft_one((Integer) object.get("is_ft_one"));
-            userHealthInfo.setIs_ft_two((Integer) object.get("is_ft_two"));
-            userHealthInfo.setIs_ft_three((Integer) object.get("is_ft_three"));
-            userHealthInfo.setIs_ft_four((Integer) object.get("is_ft_four"));
-            userHealthInfo.setIs_ft_five((Integer) object.get("is_ft_five"));
-            userHealthInfo.setIs_sep_stay((Integer) object.get("is_sep_stay"));
-            userHealthInfo.setIs_out_ts((Integer) object.get("is_out_ts"));
-            userHealthInfo.setTt_is_abr((Integer) object.get("tt_is_abr"));
+            userHealthInfo.setIs_ft_one(Integer.valueOf(String.valueOf(object.get("is_ft_one"))));
+            userHealthInfo.setIs_ft_two(Integer.valueOf(String.valueOf( object.get("is_ft_two"))));
+            userHealthInfo.setIs_ft_three(Integer.valueOf(String.valueOf( object.get("is_ft_three"))));
+            userHealthInfo.setIs_ft_four(Integer.valueOf(String.valueOf(object.get("is_ft_four"))));
+            userHealthInfo.setIs_ft_five(Integer.valueOf(String.valueOf( object.get("is_ft_five"))));
+            userHealthInfo.setIs_sep_stay(Integer.valueOf(String.valueOf( object.get("is_sep_stay"))));
+            userHealthInfo.setIs_out_ts(Integer.valueOf(String.valueOf( object.get("is_out_ts"))));
+            userHealthInfo.setTt_is_abr(Integer.valueOf(String.valueOf(object.get("tt_is_abr"))));
             userHealthInfo.setFrom_count("1");
             userHealthInfo.setSource("1");
             userHealthInfo.setEnt_time(ent_time);
@@ -133,7 +137,7 @@ public class UserController {
 //            JSONObject jsonArray = userService.login(js_code);
             JSONObject loginResult = userService.login(js_code);
 
-            redisUtil.set("openid", "12345", 10 * 6 * 6);
+            redisUtil.set("openid", loginResult.get("openid"), 10 * 6 * 6);
 
             return ResultVo.getSuccess("数据返回成功", loginResult);
         } else {
